@@ -1,9 +1,10 @@
 import { test, expect } from '@playwright/test';
+import loginData from '../testData/loginData.json'
 
 test.beforeEach('Login', async ({ page }) => {
-    await page.goto('https://www.saucedemo.com/');
-    await page.getByPlaceholder('Username').fill('standard_user');
-    await page.getByPlaceholder('Password').fill('secret_sauce');
+    await page.goto('');
+    await page.getByPlaceholder('Username').fill(loginData.validLogin.username);
+    await page.getByPlaceholder('Password').fill(loginData.validLogin.password);
     await page.getByRole('button', { name: 'Login' }).click();
 });
 

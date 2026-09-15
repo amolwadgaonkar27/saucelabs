@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import formData from '../testData/formData.json'
 import loginData from '../testData/loginData.json'
 
 test.beforeEach('Login/Add to Cart', async ({ page }) => {
@@ -11,14 +10,7 @@ test.beforeEach('Login/Add to Cart', async ({ page }) => {
     await page.getByRole('button', { name: 'Cart, 1 items' }).click();
 });
 
-test.beforeEach('click on checkout button', async ({ page }) => {
-    await page.getByRole('button', { name: 'Checkout' }).click();
-    await expect(page.getByText('Checkout: Your Information')).toBeVisible();
+test('TC013 - Verify error message without filling the form', async ({ page }) => {
+  await page.getByRole('button', { name: 'Continue' }).click();
+  await expect(page.getByRole('button', { name: 'Dismiss Error' })).toBeVisible();
 });
-
-test('TC012 - Verify user can fill the information form', async ({ page }) => {
-    await page.getByPlaceholder('First Name').fill(formData.firstName);
-    await page.getByPlaceholder('Last Name').fill(formData.lastName);
-    await page.getByPlaceholder('Zip/Postal Code').fill(formData.zipCode);
-});
-
