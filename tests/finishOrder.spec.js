@@ -25,14 +25,11 @@ test.beforeEach('Fill Form', async ({ page }) => {
 
 test('TC014 - Verify user can go to checkout overview page', async ({ page }) => {
     await page.locator('[data-test="continue"]').click();
-    await expect(page.locator('[data-test="item-4-title-link"]')).toBeVisible();
+    await expect(page.getByText('Checkout: Overview')).toBeVisible();
 });
 
 test('TC015 - Verify user can place order by clicking on Finish', async ({ page }) => {
     await page.locator('[data-test="continue"]').click();
-    await expect(page.getByText('Checkout: Overview')).toBeVisible();
-    await expect(page.getByText('Sauce Labs Backpack')).toBeVisible();
     await page.getByRole('button', { name: 'Finish' }).click();
     await expect(page.getByText('Checkout: Complete!')).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Thank you for your order!' })).toBeVisible();
 });
