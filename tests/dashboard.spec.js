@@ -1,10 +1,15 @@
 import { test, expect } from '@playwright/test';
 import loginData from '../testData/loginData.json'
+import { DashboardPage } from '../pages/DashboardPage';
+import { LoginPage } from '../pages/LoginPage';
 
 test('TC05 - Verify Dashboard page is visibile after login', async ({ page }) => {
   await page.goto('');
-  await page.getByPlaceholder('Username').fill(loginData.validLogin.username);
-  await page.getByPlaceholder('Password').fill(loginData.validLogin.password);
-  await page.getByRole('button', { name: 'Login' }).click();
-  await expect(page.getByText('Swag Labs')).toBeVisible();
+  const Login = new LoginPage(page);
+
+  await Login.login(loginData.validLogin.username,
+    loginData.validLogin.password);
+
+  const Dashboard = new DashboardPage(page);
+  await expect(Dashboard.dashboardHeader).toBeVisible();
 });

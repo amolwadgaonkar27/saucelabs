@@ -10,7 +10,7 @@ test.beforeEach('Login', async ({ page }) => {
 
 test('TC06 - Verify user can sort items from Z to A', async ({ page }) => {
     await page.getByRole('combobox', {name: 'Sort products'}).selectOption('za');
-    await expect(page.getByText("Test.allTheThings() T-Shirt (Red)")).toBeVisible();;
+    await expect(page.getByText("Test.allTheThings() T-Shirt (Red)")).toBeVisible();
 });
 
 test('TC07 - Verify user can sort items from low to high', async ({ page }) => {
