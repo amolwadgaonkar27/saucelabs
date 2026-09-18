@@ -1,23 +1,45 @@
 import { test, expect } from '@playwright/test';
 import loginData from '../testData/loginData.json'
+import { LoginPage } from '../pages/LoginPage';
+import { DashboardPage } from '../pages/DashboardPage';
+import { CartPage } from '../pages/CartPage';
 
-test.beforeEach('Login', async ({ page }) => {
+test.beforeEach('Open Saucedemo site', async ({ page }) => { 
     await page.goto('');
-    await page.getByPlaceholder('Username').fill(loginData.validLogin.username);
-    await page.getByPlaceholder('Password').fill(loginData.validLogin.password);
-    await page.getByRole('button', { name: 'Login' }).click();
 });
 
-test('TC010 - Verify user can add items to cart and go to checkout page', async ({ page }) => {
-    await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
-    await page.getByRole('button', { name: 'Cart, 1 items' }).click();
-    await expect(page.getByText("Sauce Labs Backpack")).toBeVisible();
+test.beforeEach('Login', async ({ page }) => {
+    
+    const Login = new LoginPage(page);
+
+    await Login.login(loginData.validLogin.username,
+        loginData.validLogin.password);
+});
+
+test('TC010 - Verify user can add items to cart and go to cart page', async ({ page }) => {
+
+    const Dashboard = new DashboardPage(page);
+
+    await Dashboard.clickAddToCartButton();
+    await Dashboard.clickCartButton();
+
+    const Cart = new CartPage(page);
+
+    await expect(Cart.yourCartHeader).toBeVisible();
 });
 
 test('TC011 - Verify user can remove items from cart and go back to dashboard page', async ({ page }) => {
-    await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
-    await page.getByRole('button', { name: 'Cart, 1 items' }).click();
-    await page.locator('[data-test="remove-sauce-labs-backpack"]').click();
-    await page.getByRole('button', { name: 'Continue Shopping' }).click();
-    await expect(page.getByText('Products')).toBeVisible();
+    
+    const Dashboard = new DashboardPage(page);
+
+    await Dashboard.clickAddToCartButton();
+    await Dashboard.clickCartButton();
+
+    const Cart = new CartPage(page);
+
+    await Cart.clickRemoveButton();
+    await Cart.verifyProductIsRemoved();
+    await Cart.clickContinueShoppingButton();
+
+    await expect(Dashboard.productsTitle).toBeVisible();
 });

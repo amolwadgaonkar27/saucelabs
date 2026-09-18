@@ -8,6 +8,7 @@ test.beforeEach('Open saucedemo site', async ({ page }) => {
 });
 
 test('TC01 - Verify user can login with valid creds', async ({ page }) => {
+    
     const Login = new LoginPage(page);
 
     await Login.login(loginData.validLogin.username,
@@ -15,6 +16,7 @@ test('TC01 - Verify user can login with valid creds', async ({ page }) => {
 });
 
 test('TC02 - Verify user cannot login with invalid creds - wrong password', async ({ page }) => {
+    
     const Login = new LoginPage(page);
 
     await Login.login(loginData.invalidLogin1.username,
@@ -24,6 +26,7 @@ test('TC02 - Verify user cannot login with invalid creds - wrong password', asyn
 });
 
 test('TC03 - Verify user cannot login with invalid creds - wrong username', async ({ page }) => {
+    
     const Login = new LoginPage(page);
 
     await Login.login(loginData.invalidLogin2.username,
@@ -33,6 +36,7 @@ test('TC03 - Verify user cannot login with invalid creds - wrong username', asyn
 });
 
 test('TC04 - Verify user can logout from the application', async ({ page }) => {
+    
     const Login = new LoginPage(page);
 
     await Login.login(loginData.validLogin.username,
