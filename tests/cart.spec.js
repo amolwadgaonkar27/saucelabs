@@ -4,12 +4,12 @@ import { LoginPage } from '../pages/LoginPage';
 import { DashboardPage } from '../pages/DashboardPage';
 import { CartPage } from '../pages/CartPage';
 
-test.beforeEach('Open Saucedemo site', async ({ page }) => { 
+test.beforeEach('Open Saucedemo site', async ({ page }) => {
     await page.goto('');
 });
 
 test.beforeEach('Login', async ({ page }) => {
-    
+
     const Login = new LoginPage(page);
 
     await Login.login(loginData.validLogin.username,
@@ -29,7 +29,7 @@ test('TC010 - Verify user can add items to cart and go to cart page', async ({ p
 });
 
 test('TC011 - Verify user can remove items from cart and go back to dashboard page', async ({ page }) => {
-    
+
     const Dashboard = new DashboardPage(page);
 
     await Dashboard.clickAddToCartButton();

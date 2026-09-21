@@ -1,24 +1,44 @@
 import { test, expect } from '@playwright/test';
-import formData from '../testData/formData.json'
 import loginData from '../testData/loginData.json'
+import { LoginPage } from '../pages/LoginPage';
+import { DashboardPage } from '../pages/DashboardPage';
+import { CartPage } from '../pages/CartPage';
+import { CheckoutPage } from '../pages/CheckoutPage';
+import formData from '../testData/formData.json'
 
-test.beforeEach('Login/Add to Cart', async ({ page }) => {
+test.beforeEach('Open Saucedemo site', async ({ page }) => {
     await page.goto('');
-    await page.getByPlaceholder('Username').fill(loginData.validLogin.username);
-    await page.getByPlaceholder('Password').fill(loginData.validLogin.password);
-    await page.getByRole('button', { name: 'Login' }).click();
-    await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
-    await page.getByRole('button', { name: 'Cart, 1 items' }).click();
 });
 
-test.beforeEach('click on checkout button', async ({ page }) => {
-    await page.getByRole('button', { name: 'Checkout' }).click();
-    await expect(page.getByText('Checkout: Your Information')).toBeVisible();
+test.beforeEach('Login', async ({ page }) => {
+
+    const Login = new LoginPage(page);
+
+    await Login.login(loginData.validLogin.username,
+        loginData.validLogin.password);
+});
+
+test.beforeEach('Cart', async ({ page }) => {
+
+    const Dashboard = new DashboardPage(page);
+    await Dashboard.clickAddToCartButton();
+    await Dashboard.clickCartButton();
+
+    const Cart = new CartPage(page);
+    await Cart.clickCheckoutButton();
+
 });
 
 test('TC012 - Verify user can fill the information form', async ({ page }) => {
-    await page.getByPlaceholder('First Name').fill(formData.firstName);
-    await page.getByPlaceholder('Last Name').fill(formData.lastName);
-    await page.getByPlaceholder('Zip/Postal Code').fill(formData.zipCode);
+
+    const Checkout = new CheckoutPage(page);
+    await expect(Checkout.checkoutHeader).toBeVisible();
+    await Checkout.fillInfo(formData.firstName, formData.lastName, formData.zipCode);
 });
 
+test('TC013 - Verify user gets error without filling the information after clicking on continue', async ({ page }) => {
+
+    const Checkout = new CheckoutPage(page);
+    await Checkout.clickContinueButton();
+    await expect(Checkout.errorMessage).toBeVisible();
+});

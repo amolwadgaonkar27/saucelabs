@@ -7,7 +7,7 @@
         "username": "standard_user",
         "password": "wrong password"
     },
-     "invalidLogin2": {
+    "invalidLogin2": {
         "username": "wrong username",
         "password": "secret_sauce"
     }

@@ -8,7 +8,7 @@ test.beforeEach('Open Saucedemo site', async ({ page }) => {
 });
 
 test.beforeEach('Login', async ({ page }) => {
-    
+
     const Login = new LoginPage(page);
 
     await Login.login(loginData.validLogin.username,
@@ -24,7 +24,7 @@ test('TC06 - Verify user can sort items from Z to A', async ({ page }) => {
 });
 
 test('TC07 - Verify user can sort items from low to high', async ({ page }) => {
-    
+
     const Dashboard = new DashboardPage(page);
 
     await Dashboard.selectSortOption('lohi');
@@ -39,7 +39,7 @@ test('TC08 - Verify user can sort items from high to low', async ({ page }) => {
 });
 
 test('TC09 - Verify user can sort items from A to Z', async ({ page }) => {
-   
+
     const Dashboard = new DashboardPage(page);
 
     await Dashboard.selectSortOption('az');

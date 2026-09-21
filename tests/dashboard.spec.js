@@ -4,12 +4,12 @@ import { DashboardPage } from '../pages/DashboardPage';
 import { LoginPage } from '../pages/LoginPage';
 
 test('TC05 - Verify Dashboard page is visibile after login', async ({ page }) => {
-    await page.goto('');
-    const Login = new LoginPage(page);
+  await page.goto('');
+  const Login = new LoginPage(page);
 
-    await Login.login(loginData.validLogin.username,
-      loginData.validLogin.password);
+  await Login.login(loginData.validLogin.username,
+    loginData.validLogin.password);
 
-    const Dashboard = new DashboardPage(page);
-    await expect(Dashboard.dashboardHeader).toBeVisible();
+  const Dashboard = new DashboardPage(page);
+  await expect(Dashboard.dashboardHeader).toBeVisible();
 });

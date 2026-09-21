@@ -8,6 +8,7 @@ exports.CartPage = class CartPage {
         this.removeButton = page.getByRole('button', { name: 'Remove' });
         this.continueShoppingButton = page.getByRole('button', { name: 'Continue Shopping' });
         this.removedProduct = page.getByText('Sauce Labs Backpack');
+        this.checkoutButton = page.getByRole('button', { name: 'Checkout' });
     }
 
     async isYourCartHeaderVisible() {
@@ -24,6 +25,10 @@ exports.CartPage = class CartPage {
 
     async verifyProductIsRemoved() {
         return expect(this.removedProduct).not.toBeVisible();
+    }
+
+    async clickCheckoutButton() {
+        await this.checkoutButton.click();
     }
 
 

@@ -1,35 +1,55 @@
 import { test, expect } from '@playwright/test';
 import loginData from '../testData/loginData.json'
+import { LoginPage } from '../pages/LoginPage';
+import { DashboardPage } from '../pages/DashboardPage';
+import { CartPage } from '../pages/CartPage';
+import { CheckoutPage } from '../pages/CheckoutPage';
 import formData from '../testData/formData.json'
+import { OverviewPage } from '../pages/OverviewPage';
+import { OrderCompletePage } from '../pages/OrderCompletePage';
 
-test.beforeEach('Login/Add to Cart', async ({ page }) => {
-    await page.goto('');
-    await page.getByPlaceholder('Username').fill(loginData.validLogin.username);
-    await page.getByPlaceholder('Password').fill(loginData.validLogin.password);
-    await page.getByRole('button', { name: 'Login' }).click();
-    await page.locator('[data-test="add-to-cart-sauce-labs-backpack"]').click();
-    await page.getByRole('button', { name: 'Cart, 1 items' }).click();
+test.beforeEach('Open Saucedemo site', async ({ page }) => {
+  await page.goto('');
 });
 
-test.beforeEach('click on checkout button', async ({ page }) => {
-    await page.getByRole('button', { name: 'Checkout' }).click();
-    await expect(page.getByText('Checkout: Your Information')).toBeVisible();
+test.beforeEach('Login', async ({ page }) => {
 
+  const Login = new LoginPage(page);
+
+  await Login.login(loginData.validLogin.username,
+    loginData.validLogin.password);
 });
 
-test.beforeEach('Fill Form', async ({ page }) => {
-    await page.getByPlaceholder('First Name').fill(formData.firstName);
-    await page.getByPlaceholder('Last Name').fill(formData.lastName);
-    await page.getByPlaceholder('Zip/Postal Code').fill(formData.zipCode);
+test.beforeEach('Cart', async ({ page }) => {
+
+  const Dashboard = new DashboardPage(page);
+  await Dashboard.clickAddToCartButton();
+  await Dashboard.clickCartButton();
+
+  const Cart = new CartPage(page);
+
+  await Cart.clickCheckoutButton();
+});
+
+test.beforeEach('Fill Info', async ({ page }) => {
+
+  const Checkout = new CheckoutPage(page);
+  await Checkout.fillInfo(formData.firstName, formData.lastName, formData.zipCode);
+  await Checkout.clickContinueButton();
+
 });
 
 test('TC014 - Verify user can go to checkout overview page', async ({ page }) => {
-    await page.locator('[data-test="continue"]').click();
-    await expect(page.getByText('Checkout: Overview')).toBeVisible();
+
+  const Overview = new OverviewPage(page);
+  await expect(Overview.overviewheader).toBeVisible();
 });
 
-test('TC015 - Verify user can place order by clicking on Finish', async ({ page }) => {
-    await page.locator('[data-test="continue"]').click();
-    await page.getByRole('button', { name: 'Finish' }).click();
-    await expect(page.getByText('Checkout: Complete!')).toBeVisible();
+test('TC015 - Verify user can place order by clicking on Finish button', async ({ page }) => {
+
+  const Overview = new OverviewPage(page);
+  await Overview.clickFinishButton();
+
+  const OrderComplete = new OrderCompletePage(page);
+  await expect(OrderComplete.orderCompleteHeader).toBeVisible();
 });
